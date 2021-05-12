@@ -1,2 +1,3 @@
 # app.ciphercoded.com
-chatting app im making
+## 1. Protocol
+ima fuckjin do thsi laterf bye
