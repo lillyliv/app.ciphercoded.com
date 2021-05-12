@@ -11,6 +11,19 @@ console.log("test");
 
 var currentAvaliableChannels = ["h"];
 
+function makeString(length) {
+    var result = [];
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+   }
+   return result.join('');
+}
+
+window.localStorage.setItem("token", makeString(50));
+
+
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
@@ -96,7 +109,24 @@ function fetchMsgs() {
 }
 function addMsgs(msgs) {
     window.msgs = msgs;
+    channels = msgs.channels;
     console.log(msgs);
+    var msgcontainer = document.getElementById("msg-list");
+    var num = 0;
+    removeAllChildNodes(msgcontainer);
+    for(i = 0; i < channels.length; i++) {
+        if (channels[i].name == window.channelSendingMsgIn) {
+            num = i;
+        }
+    }
+    for(j = 0; j < channels[num].msgs.length; j++) {
+        var msg = document.createElement("p");
+        var txt = channels[num].msgs[j];
+        txt = txt.replaceAll("\n", "");
+        msg.innerText = txt;
+        msgcontainer.appendChild(msg);
+    
+    }
 }
 
 
@@ -148,10 +178,11 @@ function addServers(data) {
 
     //console.log(servers);
     currentAvaliableChannels = [];
+    var container = document.getElementById("group-list");
+    removeAllChildNodes(container);
     console.log("calling addServers");
     for(i = 0; i < servers.length; i++) {
         //currentAvaliableChannels.push(channels[i]);
-        var container = document.getElementById("group-list");
         var server = document.createElement("div");
         server.innerHTML = servers[i];
         server.style = `
@@ -272,6 +303,17 @@ function addChannels(channels) {
             border-radius: 5px;
             `;
         };
+        if(window.channelSendingMsgIn == channels[i].name){
+            var msgcontainer = document.getElementById("msg-list");
+            removeAllChildNodes(msgcontainer);
+            for(j = 0; j < channels[i].msgs.length; j++) {
+                var msg = document.createElement("p");
+                var txt = channels[i].msgs[j];
+                txt = txt.replaceAll("\n", "");
+                msg.innerText = txt;
+                msgcontainer.appendChild(msg);
+            }
+        }
         channel.onmouseover="var name = this.id;name.style.cursor='pointer'"
         container.appendChild(channel);
     }
@@ -313,7 +355,7 @@ function makews(server) {
     console.log("making websocket");
 
     if(server == undefined) {
-        server = "ws://localhost:8080";
+        server = "ws://app.ciphercoded.com:8080";
     }
 
     window.socket = new WebSocket(server);
@@ -399,7 +441,6 @@ function loadSettings() {
 function addSetting (key, data) {
     window.localStorage.setItem(key, data);
 }
-
 
 makews();
 loadSettings();
