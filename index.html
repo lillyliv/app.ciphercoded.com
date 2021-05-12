@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>
+            hi
+        </title>
+        <script src="crypto.js"></script>
+        <link id="style" rel="stylesheet" href="main.css"></link>
+    </head>
+    <body>
+        <div id="app">
+            <div id="group-list">
+
+            </div>
+            <div id="current-group">
+                <div id="channels">
+
+                </div>
+                <div id="msgs">
+                    <div id="msg-list">
+
+                    </div>
+                    <div id="msg-box">
+                        <div id="msg-box-txt" contenteditable="true" onclick="
+                            var box = document.getElementById('msg-box-txt');
+                            if(box.innerText == 'Message') {
+                                box.innerText = '';
+                            }
+                        ">Message</div>
+                    </div>
+                </div>
+                <div id="members">
+
+                </div>
+            </div>
+        </div>
+        <script>
+            var scriptT = document.createElement("script");
+            scriptT.src = "main.js?" + Math.floor(Math.random() * 100000);
+            //scriptT.defer = true;
+            document.body.appendChild(scriptT);
+        </script>
+    </body>
+</html>

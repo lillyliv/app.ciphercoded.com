@@ -1,0 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+html {
+    margin: 0%;
+    padding: 0%;
+}
+body {
+    margin: 0%;
+    padding: 0%;
+    background-color: #363636;
+    overflow-y: hidden;
+}
+/* generic css */
+div#app {
+    display: flex;
+    background-color: #363636;
+    color: #f3f3f3;
+    font-family: "Roboto", sans-serif;
+    margin: 0%;
+    width: 100%;
+    height: 100%;
+    align-self: center;
+    align-items: center;
+}
+
+/* main/app css */
+
+
+/*
+div soup
+
+<app>
+    <group-list>
+
+    </group-list>
+    <current-group>
+        <channels>
+
+        </channels>
+        <msgs>
+            <msg-list>
+
+            </msg-list>
+            <msg-box>
+                Message
+            </msg-box>
+        </msgs>
+        <members>
+
+        </members>
+    <current-group>
+</app>
+*/
+
+
+div#group-list {
+    background-color: #302f2f;
+    padding-left: 0.7%;
+    padding-right: 0.7%;
+    margin: 0%;
+    width: 10%;
+    height: 100%;
+    align-self: center;
+    align-items: center;
+    overflow-y: auto;
+}
+div#current-group {
+    display:flex;
+    background-color: #292929;
+    margin: 0%;
+    width: 70%;
+    height: 100%;
+    align-self: center;
+    align-items: center;
+}
+div#channels {
+    background-color: #292929;
+    padding-left: 0.7%;
+    padding-right: 0.7%;
+    margin: 0%;
+    width: 20%;
+    height: 100%;
+    align-self: center;
+    align-items: center;
+    overflow-y: auto;
+}
+div#msgs {
+    background-color: #464646;
+    padding-left: 0.7%;
+    padding-right: 0.7%;
+    padding-bottom: 1%;
+    margin: 0%;
+    width: 80%;
+    height: 100%;
+    align-self: center;
+    align-items: center;
+}
+
+div#msg-list {
+    background-color: #464646;
+    margin: 0%;
+    width: 100%;
+    height: 92%;
+    align-self: center;
+    overflow-y: auto;
+}
+div#msg-box {
+    background-color: #5c5c5c;
+    margin: 0%;
+    width: 100%;
+    height: 8%;
+    border-radius: 6px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+div#msg-box-txt {
+    padding-left: 0.7%;
+    padding-top: 0.5%;
+    width: 100%;
+    height: 100%;
+}
+
+
+/* login css */
+
+div#login-background {
+    background-color: #292929;
+    width: 100%;
+    height: 100%;
+}
+
+div#login-box {
+    background-color: #474747;
+    padding-left: 1%;
+    padding-right: 1%;
+    margin-left: 41%;
+    margin-top: 14%;
+    border:10px solid #3d3d3d;
+    width: 17%;
+    height: 45%;
+    text-align: center;
+    align-self: center;
+    align-items: center;
+}
+
+div#login-txt {
+    font-weight:600;
+    font-size: 160%;
+    margin-top: 1%;
+    margin-left: 10%;
+    padding:1%;
+    width: 80%;
+    text-align: center;
+    align-self: center;
+    align-items: center;
+}
+div#login-info-container {
+    margin-top: 5%;
+}
+div#username {
+    background-color: #3b3b3b;
+    margin-top: 2%;
+    margin-left: 10%;
+    padding:1.5%;
+    width: 80%;
+    text-align: center;
+    align-self: center;
+    align-items: center;
+}
+div#password {
+    background-color: #3b3b3b;
+    margin-top: 2%;
+    margin-left: 10%;
+    padding:1.5%;
+    width: 80%;
+    text-align: center;
+    align-self: center;
+    align-items: center;
+}
+div#login-button-container {
+    margin-top: 5%;
+    display: flex;
+}
+div#login-button {
+    background-color: #3b3b3b;
+    margin-top: 2%;
+    margin-left: 10%;
+    padding:1%;
+    padding-top: 1.5%;
+    height: 5%;
+    width: 37%;
+    text-align: center;
+    align-self: center;
+    align-items: center;
+}
+div#signup-button {
+    background-color: #3b3b3b;
+    margin-top: 2%;
+    margin-left: 4%;
+    padding:1%;
+    padding-top: 1.5%;
+    height: 5%;
+    width: 37%;
+    text-align: center;
+    align-self: center;
+    align-items: center;
+}

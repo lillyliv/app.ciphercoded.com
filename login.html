@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>
+            Login
+        </title>
+        <script src="crypto.js"></script>
+        <script defer src="main.js?347432"></script>
+        <link id="style" rel="stylesheet" href="main.css"></link>
+    </head>
+    <body>
+        <div id="app">
+            <div id="login-background">
+                <div id="login-box">
+                    <div id="login-txt">
+                        Login to App
+                    </div>
+                    <div id="login-info-container">
+                        <div id="username" contenteditable="true" onclick="if(document.getElementById('username').innerText == 'username/email'){console.log('clicked');document.getElementById('username').innerText = ''}">
+                            username/email
+                        </div>
+                        <div id="password" contenteditable="true" onclick="if(document.getElementById('password').innerText == 'password'){console.log('clicked');document.getElementById('password').innerText = ''}">
+                            password
+                        </div>
+                    </div>
+                    <div id="login-button-container">
+                        <div id="login-button" onclick = "login(false);">
+                            Login
+                        </div>
+                        <div id="signup-button" onclick = "login(true);">
+                            Signup
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
