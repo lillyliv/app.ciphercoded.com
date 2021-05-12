@@ -6,7 +6,7 @@ window.settings = {};
 
 window.channelSendingMsgIn = "test1";
 window.serverSendingMsgIn = "test";
-
+window.msgs = [];
 console.log("test");
 
 var currentAvaliableChannels = ["h"];
@@ -89,7 +89,16 @@ function changeServer(server) {
     currentAvaliableChannels = [];
     window.serverSendingMsgIn = server;
     checkChannels();
+    //changeChannel(currentAvaliableChannels[0].name);
 }
+function fetchMsgs() {
+    window.socket.send(JSON.stringify({type:"fetch-msgs",server:window.serverSendingMsgIn, channel:window.channelSendingMsgIn ,token:localStorage.getItem("token")}));
+}
+function addMsgs(msgs) {
+    window.msgs = msgs;
+    console.log(msgs);
+}
+
 
 var servers = []
 
@@ -106,11 +115,30 @@ function checkServers() {
     if(changed == 0) {
         window.socket.send(JSON.stringify({type:"fetch-servers",token:localStorage.getItem("token")}));
         changed = 1;
+    } else {
+        var elem = document.getElementById(window.serverSendingMsgIn);
+        elem.style = `
+        background-color: #424242;
+        margin-top:3px;
+        margin-bottom:3px;
+        padding:6px;
+        border-radius: 5px;
+        `;
+        for(i = 0; i < document.getElementById("group-list").childNodes.length; i++) {
+            if(document.getElementById("group-list").childNodes[i].id != window.serverSendingMsgIn){
+            document.getElementById("group-list").childNodes[i].style = `
+            background-color: #363636;
+            margin-top:3px;
+            margin-bottom:3px;
+            padding:6px;
+            border-radius: 5px;
+            `;
+            }
+        }
     }
 }
 
 window.oldElem = "";
-
 function addServers(data) {
     var servers = data;
 
@@ -211,12 +239,12 @@ function checkChannels() {
         prevServ = serverSendingMsgIn;
         addedChannels = 0;
         window.socket.send(JSON.stringify({type:"fetch-channels", server:window.serverSendingMsgIn, token: localStorage.getItem("token")}));
-        
     }
 }
-
+window.channels;
 function addChannels(channels) {
     channels = channels.channels;
+    window.channels = channels;
     console.log(channels);
     currentAvaliableChannels = [];
     console.log("calling addChannels");
@@ -236,11 +264,18 @@ function addChannels(channels) {
         channel.onclick = function () {
             var name = this.id;
             changeChannel(name);
+            document.getElementById(name).style = `
+            background-color: #424242;
+            margin-top:3px;
+            margin-bottom:3px;
+            padding:6px;
+            border-radius: 5px;
+            `;
         };
         channel.onmouseover="var name = this.id;name.style.cursor='pointer'"
         container.appendChild(channel);
     }
-    changeChannel(currentAvaliableChannels[0].name);
+    //changeChannel(currentAvaliableChannels[0].name);
 }
 
 function removeChannels() {
@@ -254,6 +289,7 @@ function handleWsPacket(packet) {
     if (packet.type == "heartbeat") {
         checkChannels();
         checkServers();
+        fetchMsgs();
         //console.log("heartbeat packet recived, sending response");
         window.socket.send(JSON.stringify({
             type: "heartbeat-response",
@@ -263,6 +299,8 @@ function handleWsPacket(packet) {
         addChannels(packet.data);
     } else if (packet.type == "servers") {
         addServers(packet.data);
+    } else if (packet.type == "msgs") {
+        addMsgs(packet.data);
     }
 }
 
