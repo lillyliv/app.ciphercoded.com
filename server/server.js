@@ -149,6 +149,7 @@ function main () {
     tempSockets = [];
     //console.log(sockets);
     for(var i = 0; i < sockets.length; i++) {
+        try {
             if(sockets[i].heartbeatsMissed >= 3) {
                 dcUser(sockets[i].token);
             }
@@ -159,7 +160,10 @@ function main () {
                 type: "heartbeat"
             }));
             sockets[i].heartbeatResponded = false;
-    }
+        } catch {
+            console.error("error checking heartbeats missed for user, probably does not exist anymore");
+        }
+    }   
 }
 function sendMsgsToClients() {
 
