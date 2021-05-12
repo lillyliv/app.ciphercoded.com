@@ -196,7 +196,7 @@ function checkWsMsg (msg) {
     } else if (msg.type == "msg") {
         for(i = 0; i < database.server.test.channels.length; i++) {
             if(database.server[msg.server].channels[i].name == msg.channel) {
-                database.server[msg.server].channels[i].msgs.unshift(msg.msg);
+                database.server[msg.server].channels[i].msgs.push(msg.msg);
             }
         }
         console.log(database.server.test);
@@ -229,6 +229,15 @@ function checkWsMsg (msg) {
         }
     } else if (msg.type == "create-server") {
         database.server[msg.name] = msgServerTools.createServer(msg.token, msg.name);
+    } else if (msg.type == "fetch-msgs") {
+        var server = msg.server;
+        var serverData = database.server[server];
+        console.log(database.server[server]);
+        sendWsMsg(msg.token, JSON.stringify({
+            type: "msgs",
+            data: serverData,
+            time: Date.now
+        }));
     }
 }
 

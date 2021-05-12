@@ -20,6 +20,18 @@ function readDb() {
     });
     //return dataR;
 }
+function checkAccount(token) {
+    var tempDb = JSON.parse(readDb());
+    var tempDb = tempDb.accounts;
+    var found = 0;
+    for (i = 0; i < tempDb.length; i++) {
+        if(tempDb.token == token) {
+            found = i;
+            break;
+        }
+    }
+    return tempDb[found];
+}
 module.exports = {
-    writeDb, writeDbObj, readDb
+    writeDb, writeDbObj, readDb, checkAccount
 }
