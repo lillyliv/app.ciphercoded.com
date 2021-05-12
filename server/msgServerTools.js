@@ -1,9 +1,5 @@
-function createServer() {
-    try{
-        return {server:{channels:[{name:"test1",msgs:[]},{name:"test2",msgs:[]}]}, name:name};
-    } catch {
-        return false;
-    }
+function createServer(owner, name) {
+    return {owner:owner,channels:[{name:"test1",msgs:[]},{name:"test2",msgs:[]}]};
 }
 
 module.exports = {
