@@ -101,6 +101,15 @@ function fetchServers() {
         time: Date.now()
     }))
 }
+var changed = 0;
+function checkServers() {
+    if(changed == 0) {
+        window.socket.send(JSON.stringify({type:"fetch-servers",token:localStorage.getItem("token")}));
+        changed = 1;
+    }
+}
+
+window.oldElem = "";
 
 function addServers(data) {
     var servers = data;
@@ -129,6 +138,28 @@ function addServers(data) {
             var name = this.id;
             if(name != window.serverSendingMsgIn) {
                 changeServer(name);
+            }
+            var elem = document.getElementById(name);
+            if(window.oldElem != elem) {
+                elem.style = `
+                background-color: #424242;
+                margin-top:3px;
+                margin-bottom:3px;
+                padding:6px;
+                border-radius: 5px;
+                `;
+                try{
+                    window.oldElem.style = `
+                    background-color: #363636;
+                    margin-top:3px;
+                    margin-bottom:3px;
+                    padding:6px;
+                    border-radius: 5px;
+                    `;
+                } catch {
+                    
+                }
+                window.oldElem = elem;
             }
         };
         //server.onmouseover="var name = this.id;name.style.cursor='pointer'"
@@ -222,6 +253,7 @@ function handleWsPacket(packet) {
     var token = window.localStorage.getItem("token");
     if (packet.type == "heartbeat") {
         checkChannels();
+        checkServers();
         //console.log("heartbeat packet recived, sending response");
         window.socket.send(JSON.stringify({
             type: "heartbeat-response",
