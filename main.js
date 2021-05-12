@@ -30,7 +30,8 @@ function pow(difficulty) {
     while(hash.indexOf(zeros) == -1) {
         nonce++;
         //console.log("not zeros");
-        hash = CryptoJS.SHA256(token + nonce + date).toString();
+        //hash = CryptoJS.SHA256(token + nonce + date).toString();
+        hash = forge_sha256(token + nonce + date);
     }
     console.log("hash: " + hash);
     console.log("nonce: " + nonce);
@@ -87,8 +88,55 @@ function changeServer(server) {
     removeChannels();
     currentAvaliableChannels = [];
     window.serverSendingMsgIn = server;
+    checkChannels();
 }
 
+var servers = []
+
+function fetchServers() {
+    var token = localStorage.getItem("token");
+    window.socket.send(JSON.stringify({
+        type: "fetch-servers",
+        token: token,
+        time: Date.now()
+    }))
+}
+
+function addServers(data) {
+    var servers = data;
+
+    /*
+        INSERT ADD SERVERS CODE HERE PLS
+    */
+
+    //console.log(servers);
+    currentAvaliableChannels = [];
+    console.log("calling addServers");
+    for(i = 0; i < servers.length; i++) {
+        //currentAvaliableChannels.push(channels[i]);
+        var container = document.getElementById("group-list");
+        var server = document.createElement("div");
+        server.innerHTML = servers[i];
+        server.style = `
+        background-color: #363636;
+        margin-top:3px;
+        margin-bottom:3px;
+        padding:6px;
+        border-radius: 5px;
+        `;
+        server.id = servers[i];
+        server.onclick = function () {
+            var name = this.id;
+            if(name != window.serverSendingMsgIn) {
+                changeServer(name);
+            }
+        };
+        //server.onmouseover="var name = this.id;name.style.cursor='pointer'"
+        container.appendChild(server);
+    }
+    //changeChannel(currentAvaliableChannels[0].name);
+
+}
 var prevChannel = ""
 
 function changeChannel(channel) {
@@ -181,6 +229,8 @@ function handleWsPacket(packet) {
         }));
     } else if (packet.type == "channels") {
         addChannels(packet.data);
+    } else if (packet.type == "servers") {
+        addServers(packet.data);
     }
 }
 
@@ -205,7 +255,7 @@ function makews(server) {
             type: "open-connection",
             token: token,
             username: username,
-            pow: pow(4)
+            pow: pow(5)
         }));
     };
       
