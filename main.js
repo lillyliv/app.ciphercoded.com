@@ -1,3 +1,7 @@
+/*
+i think theres a memory leak somwhere in here
+*/
+
 window.settings = {};
 
 window.channelSendingMsgIn = "test1";
@@ -73,7 +77,13 @@ function login(Signup) {
 function changeChannel(channel) {
     window.channelSendingMsgIn = channel;
 }
-
+function makeServer (name) {
+    window.socket.send(JSON.stringify({
+        type: "create-server",
+        token: localStorage.getItem("token"),
+        name: name
+    }));
+}
 var prevServ = "";
 function checkChannels() {
     if (prevServ != serverSendingMsgIn) {
