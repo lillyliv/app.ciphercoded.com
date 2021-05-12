@@ -8,6 +8,15 @@ window.channelSendingMsgIn = "test1";
 window.serverSendingMsgIn = "test";
 
 console.log("test");
+
+var currentAvaliableChannels = ["h"];
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 function pow(difficulty) {
     console.log("doing POW...");
     var date = Date.now();
@@ -74,8 +83,41 @@ function login(Signup) {
 
     window.socket.send(JSON.stringify(loginDataToServer));
 }
+function changeServer(server) {
+    removeChannels();
+    currentAvaliableChannels = [];
+    window.serverSendingMsgIn = server;
+}
+
+var prevChannel = ""
+
 function changeChannel(channel) {
+    try {
     window.channelSendingMsgIn = channel;
+    var channelElem = document.getElementById(channel);
+    channelElem.style = `
+    background-color: #424242;
+    margin-top:3px;
+    margin-bottom:3px;
+    padding:6px;
+    border-radius: 5px;
+    `;
+    } catch {
+        console.warn("error changing channel style");
+    }
+    try {
+        var prevChannelElem = document.getElementById(prevChannel);
+        prevChannelElem.style = `
+        background-color: #363636;
+        margin-top:3px;
+        margin-bottom:3px;
+        padding:6px;
+        border-radius: 5px;
+        `;
+    } catch {
+        console.warn("cannot find channel, maybe switched server?");
+    }
+    prevChannel = channel;
 }
 function makeServer (name) {
     window.socket.send(JSON.stringify({
@@ -97,8 +139,10 @@ function checkChannels() {
 function addChannels(channels) {
     channels = channels.channels;
     console.log(channels);
+    currentAvaliableChannels = [];
     console.log("calling addChannels");
     for(i = 0; i < channels.length; i++) {
+        currentAvaliableChannels.push(channels[i]);
         var container = document.getElementById("channels");
         var channel = document.createElement("div");
         channel.innerHTML = channels[i].name;
@@ -112,11 +156,17 @@ function addChannels(channels) {
         channel.id = channels[i].name;
         channel.onclick = function () {
             var name = this.id;
-            console.log('clicked ' + name);
             changeChannel(name);
         };
+        channel.onmouseover="var name = this.id;name.style.cursor='pointer'"
         container.appendChild(channel);
     }
+    changeChannel(currentAvaliableChannels[0].name);
+}
+
+function removeChannels() {
+    var parent = document.getElementById("channels");
+    removeAllChildNodes(parent);
 }
 
 var sent = 0;
