@@ -201,14 +201,11 @@ function checkWsMsg (msg) {
         }
         console.log(database.server.test);
     } else if (msg.type == "fetch-servers") {
-        /*var server = msg.server;
-        var serverData = database.server[server];
-        console.log(database.server[server]);
+        var acc = dbTools.checkAccount(msg.token);
         sendWsMsg(msg.token, JSON.stringify({
-            type: "channels",
-            data: serverData,
-            time: Date.now
-        }));*/
+            type:"servers",
+            data:acc.serversIn
+        }))
     } else if (msg.type == "fetch-channels") {
         var server = msg.server;
         var serverData = database.server[server];
