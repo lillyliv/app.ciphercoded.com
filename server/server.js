@@ -191,16 +191,22 @@ function checkWsMsg (msg) {
         }
     } else if (msg.type == "msg") {
         for(i = 0; i < database.server.test.channels.length; i++) {
-            if(database.server.test.channels[i].name == msg.channel) {
-                database.server.test.channels[i].msgs.unshift(msg.msg);
+            if(database.server[msg.server].channels[i].name == msg.channel) {
+                database.server[msg.server].channels[i].msgs.unshift(msg.msg);
             }
         }
         console.log(database.server.test);
     } else if (msg.type == "fetch-servers") {
-
+        /*var server = msg.server;
+        var serverData = database.server[server];
+        console.log(database.server[server]);
+        sendWsMsg(msg.token, JSON.stringify({
+            type: "channels",
+            data: serverData,
+            time: Date.now
+        }));*/
     } else if (msg.type == "fetch-channels") {
         var server = msg.server;
-        eval("var serverData = database.server." + server);
         var serverData = database.server[server];
         console.log(database.server[server]);
         sendWsMsg(msg.token, JSON.stringify({
@@ -221,7 +227,7 @@ function checkWsMsg (msg) {
             //sendWsMsg(msg.token, 400);
         }
     } else if (msg.type == "create-server") {
-        database[msg.name] = msgServerTools.createServer();
+        database.server[msg.name] = msgServerTools.createServer(msg.token, msg.name);
     }
 }
 
